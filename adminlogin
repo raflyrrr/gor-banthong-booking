@@ -1,0 +1,355 @@
+<?php
+include "dbConnect.php";
+
+session_start();
+if (!empty($_SESSION['inputAdmin'])) {
+    header("location: adminHome.php");
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login - Lets Golf</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body id="LoginAdminForm">
+    <header>
+        <nav class="container navbar navbar-expand-lg navbar-light sticky-top">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="adminLogin.php">Admin</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <br><br>
+        <h1 class="form-heading">Lets Golf</h1>
+        <div class="login-form">
+            <div class="main-div">
+                <div class="panel">
+                </div>
+                <form action="adminLogin.php" method="post">
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="inputAdmin" placeholder="Username" style="width:50%" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="inputPassword" placeholder="Password" style="width:50%" required>
+                    </div>
+
+                    <button type="submit" name="adminLogin" class="btn btn-primary">Login</button>
+
+                </form>
+            </div>
+        </div>
+
+        <?php
+        if (isset($_POST['adminLogin'])) {
+            $inputAdmin = $_POST['inputAdmin'];
+            $inputPassword = $_POST['inputPassword'];
+            echo $inputAdmin;
+            $query = "select password from customer where username = '$inputAdmin' and role='admin'";
+            $query_run = mysqli_query($db_connection, $query);
+            $num_rows = mysqli_num_rows($query_run);
+            if ($num_rows > 0) {
+                $data = mysqli_fetch_assoc($query_run);
+                if ($inputPassword == $data['password']) {
+                    session_start();
+                    $_SESSION['inputAdmin'] = $inputAdmin;
+                    header("location:adminHome.php");
+                } else {
+                    echo  '<div class="alert alert-danger mt-3" role="alert">
+                Password yang anda masukkan salah
+            </div>';
+                }
+            } else {
+                echo '<div class="alert alert-danger mt-3" role="alert">
+            User tidak ditemukan
+        </div>';
+            }
+        }
+
+        ?>
+    </div>
+    <?php include('footer.php') ?>
+</body>
+
+</html>
+<?php
+session_start();
+if (empty($_SESSION['inputAdmin'])) {
+    header("location: adminLogin.php");
+}
+?>
+<div class="landing-text ml-5 mt-3">
+    <h1>Verifikasi Booking</h1>
+    <br>
+    <?php
+    include "dbConnect.php";
+    $sql = mysqli_query($db_connection, "SELECT * FROM verifikasi order by tgl desc");
+
+    $sql2 = mysqli_query($db_connection, "SELECT COUNT(*) AS jumlah FROM verifikasi");
+    $get_jumlah = mysqli_fetch_array($sql2);
+    ?>
+    <?php echo $get_jumlah['jumlah']; ?> data(s) waiting for confirmation.<br><br>
+
+
+    <input type='hidden' id='sort' value='asc'>
+    <div class="table-responsive" style="width:90%">
+        <table class="table table-bordered table-striped" id='empTable'>
+            <thead>
+                <tr>
+                    <th><span onclick='sortTable("orderid");'>Order Id</span></th>
+                    <th><span onclick='sortTable("username");'>Username</span></th>
+                    <th><span onclick='sortTable("phonenum");'>Nomor Telepon</span></th>
+                    <th><span onclick='sortTable("tgl");'>Tanggal</span></th>
+                    <th><span onclick='sortTable("start");'>Mulai</span></th>
+                    <th><span onclick='sortTable("end");'>Selesai</span></th>
+                    <th><span onclick='sortTable("duration");'>Durasi</span></th>
+                    <th><span onclick='sortTable("fieldnum");'>Nama Lapangan</span></th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <?php
+            while ($data = mysqli_fetch_array($sql)) {
+            ?>
+                <tbody>
+                    <tr>
+                        <td class="align-middle"><?php echo $data['transnum']; ?></td>
+                        <td class="align-middle"><?php echo $data['username']; ?></td>
+                        <td class="align-middle"><?php echo $data['phonenum']; ?></td>
+                        <td class="align-middle"><?php echo $data['tgl']; ?></td>
+                        <td class="align-middle"><?php echo $data['start']; ?>.00</td>
+                        <td class="align-middle"><?php echo $data['end']; ?>.00</td>
+                        <td class="align-middle"><?php echo $data['duration']; ?> Jam</td>
+                        <td class="align-middle"><?php echo $data['fieldnum']; ?></td>
+                        <td><a href="responseAccept.php?transnum=<?php echo $data['transnum']; ?>" class="btn btn-success">Accept</a>
+                            <a href="responseReject.php?transnum=<?php echo $data['transnum']; ?>" class="btn btn-danger">Reject</a>
+                        </td>
+                    </tr>
+                </tbody>
+            <?php
+            }
+            ?>
+        </table>
+    </div>
+
+</div>
+
+
+
+<body>
+
+    <div class="site-content">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+                <a href="adminHome.php" class="nav-brand ml-3 mr-5">
+                    <h4>Lets Golf</h4>
+                </a>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminVerify.php" style="margin-right:20px">Verifikasi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminTransaction.php" style="margin-right:20px">Transaksi</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="adminField.php" style="margin-right:20px">Daftar Lapangan</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav ml-auto mr-3">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Admin
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="adminLogout.php">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="landing-text ml-5 mt-3">
+            <h1>Daftar Lapangan</h1>
+            <br>
+            <a href="adminAddField.php" class="btn btn-success mb-3">Add</a>
+            <?php if (isset($_POST['submit'])) { ?>
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>Berhasil</strong> <?php echo htmlentities($_SESSION['msg']); ?><?php echo htmlentities($_SESSION['msg'] = ""); ?>
+                </div>
+            <?php } ?>
+            <div class="table-responsive" style="width:90%">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nama Lapangan</th>
+                            <th>Gambar</th>
+                            <th>Harga Pagi</th>
+                            <th>Harga Sore-Malam</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <?php $query = "select * from field;";
+                    $query_run = mysqli_query($db_connection, $query);
+                    while ($row = mysqli_fetch_assoc($query_run)) {
+                    ?>
+                        <tbody>
+                            <tr>
+                                <td><?php echo $row['fieldnum']; ?></td>
+                                <td><?php echo "<img src='fieldimages/" . $row['gambar'] . "' height='130' width='150' />"; ?></td>
+                                <td>Rp. <?php echo number_format($row['harga']) ?></td>
+                                <td>Rp. <?php echo number_format($row['hargamalam'])  ?></td>
+                                <td><a href="adminEditPrice.php?fieldnum=<?php echo $row['fieldnum']; ?>" class="btn btn-primary">Edit </a>
+                                    <a href="deleteField.php?fieldnum=<?php echo $row['fieldnum']; ?>" class="btn btn-danger">Delete </a>
+                                </td>
+                            </tr>
+                        </tbody><?php } ?>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <?php include('footer.php') ?>
+</body>
+
+
+<div class="site-content">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+            <a href="adminHome.php" class="nav-brand ml-3 mr-5">
+                <h4>Lets Golf</h4>
+            </a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="adminVerify.php" style="margin-right:20px">Verifikasi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="adminTransaction.php" style="margin-right:20px">Transaksi</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="adminField.php" style="margin-right:20px">Daftar Lapangan</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto mr-3">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admin
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="adminLogout.php">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="landing-text ml-5 mt-3">
+        <h1>Edit Lapangan</h1>
+        <?php if (isset($_POST['submit'])) { ?>
+            <div class="alert alert-success col-md-3 mt-4">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>Berhasil</strong> <?php echo htmlentities($_SESSION['msg']); ?><?php echo htmlentities($_SESSION['msg'] = ""); ?>
+            </div>
+        <?php } ?>
+        <form class="mt-5" method="post" enctype="multipart/form-data">
+            <?php
+            $id = $_GET['fieldnum'];
+            $query = "select * from field where fieldnum = '$id';";
+            $query_run = mysqli_query($db_connection, $query);
+            while ($row = mysqli_fetch_assoc($query_run)) {
+            ?>
+                <div class="control-group">
+                    <label class="control-label" for="basicinput">Nama Lapangan</label>
+                    <div class="controls">
+                        <input type="text" name="fieldnum" required value="<?php echo $row['fieldnum'] ?>">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label mt-3" for="basicinput">Harga Pagi</label>
+                    <div class="controls">
+                        <input type="text" name="harga" required value="<?php echo $row['harga'] ?>">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label mt-3" for="basicinput">Harga Sore-Malam</label>
+                    <div class="controls">
+                        <input type="text" name="hargamalam" required value="<?php echo $row['hargamalam'] ?>">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label mt-3" for="basicinput">Gambar</label>
+                    <div class="controls">
+                        <img src="fieldimages/<?php echo $row['gambar'] ?>" style="width:250px;"><br><br>
+                        <input type="file" name="gambar" required>
+                    </div>
+                </div>
+
+            <?php } ?>
+            <div class="control-group">
+                <div class="controls">
+                    <a href="adminField.php" class="btn btn-primary mt-3" role="button">Kembali</a>
+                    <button type="submit" name="submit" class="btn btn-success mt-3">Perbarui</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<h1>Tambah Lapangan</h1>
+            <?php if (isset($_POST['submit'])) { ?>
+                <div class="alert alert-success col-md-3 mt-4">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>Berhasil</strong> <?php echo htmlentities($_SESSION['msg']); ?><?php echo htmlentities($_SESSION['msg'] = ""); ?>
+                </div>
+            <?php } ?>
+            <form class="mt-5" method="post" enctype="multipart/form-data">
+                <div class="control-group">
+                    <label class="control-label" for="basicinput">Nama Lapangan</label>
+                    <div class="controls">
+                        <input type="text" name="fieldnum" required>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label mt-3" for="basicinput">Harga Pagi</label>
+                    <div class="controls">
+                        <input type="text" name="harga" required>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label mt-3" for="basicinput">Harga Sore-Malam</label>
+                    <div class="controls">
+                        <input type="text" name="hargamalam" required>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label mt-3" for="basicinput">Gambar</label>
+                    <div class="controls">
+                        <input type="file" name="gambar" required>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <a href="adminField.php" class="btn btn-primary mt-3" role="button">Kembali</a>
+                        <button type="submit" name="submit" class="btn btn-success mt-3">Tambah</button>
+                    </div>
+                </div>
+            </form>
