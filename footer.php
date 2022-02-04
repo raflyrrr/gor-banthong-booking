@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p>&copy; <?php echo date('Y') ?> GOR BANTHONG</p>
+                <p>&copy; <?php echo date('Y') ?> GOR SAHABAT</p>
             </div>
         </div>
     </div>

@@ -14,7 +14,7 @@ if (empty($_SESSION['inputAdmin'])) {
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>GOR BANTHONG - Verification</title>
+	<title>GOR SAHABAT - Verification</title>
 
 	<!-- Custom fonts for this template-->
 	<link href="./assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

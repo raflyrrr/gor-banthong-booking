@@ -17,7 +17,7 @@ if (!empty($_SESSION['inputAdmin'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>GOR BANTHONG - Login</title>
+    <title>GOR SAHABAT - Login</title>
 
     <!-- Custom fonts for this template-->
     <link href="./assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -45,7 +45,7 @@ if (!empty($_SESSION['inputAdmin'])) {
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">GOR BANTHONG</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">GOR SAHABAT</h1>
                                     </div>
                                     <form class="user" action="adminLogin" method="post">
                                         <div class="form-group">

@@ -32,7 +32,7 @@ if (isset($_POST['submit'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>GOR BANTHONG - Edit Courts</title>
+    <title>GOR SAHABAT - Edit Courts</title>
 
     <!-- Custom fonts for this template-->
     <link href="./assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -159,7 +159,7 @@ if (isset($_POST['submit'])) {
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; GOR BANTHONG</span>
+                        <span>Copyright &copy; GOR SAHABAT</span>
                     </div>
                 </div>
             </footer>

@@ -13,7 +13,7 @@ if (empty($_SESSION['username'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Booking Detail - GOR BANTHONG</title>
+    <title>Booking Detail - GOR SAHABAT</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -146,7 +146,7 @@ if (empty($_SESSION['username'])) {
                     <br>
                     <img src="assets/img/bca.svg" width="80px" class="mr-3">Bank BCA
                     <br>
-                    <p class="mt-2">012345-123-123-123 a/n <span class="norek">GOR BANTHONG</span></p>
+                    <p class="mt-2">012345-123-123-123 a/n <span class="norek">GOR SAHABAT</span></p>
                 </div>
                 <div class="mt-4 mb-4">
                     <a href="https://api.whatsapp.com/send?phone=6289653455762&text=Halo%2C%20saya%20ingin%20mengkonfirmasi%20pembayaran%20dengan%20Order%20id%3A%20<?php echo $transnum ?>%2C%20Username%3A%20<?php echo $username ?>%2C%20Total%20pembayaran%3A%20Rp.<?php echo $price ?>" class="btn btn-warning" target="_blank"><i class="fab fa-whatsapp"></i> Confirm payment</a>

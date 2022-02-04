@@ -15,7 +15,7 @@ if (empty($_SESSION['inputAdmin'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>GOR BANTHONG - Courts</title>
+    <title>GOR SAHABAT - Courts</title>
 
     <!-- Custom fonts for this template-->
     <link href="./assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -140,7 +140,7 @@ if (empty($_SESSION['inputAdmin'])) {
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; GOR BANTHONG</span>
+                        <span>Copyright &copy; GOR SAHABAT</span>
                     </div>
                 </div>
             </footer>

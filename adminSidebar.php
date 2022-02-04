@@ -2,7 +2,7 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="adminHome">
-        <div class="sidebar-brand-text mx-3">GOR BANTHONG</div>
+        <div class="sidebar-brand-text mx-3">GOR SAHABAT</div>
     </a>
 
     <!-- Divider -->
